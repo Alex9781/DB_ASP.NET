@@ -1,4 +1,5 @@
 ﻿using DB_ASP.NET.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,11 +7,11 @@ namespace DB_ASP.NET.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -18,9 +19,19 @@ namespace DB_ASP.NET.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Login()
         {
             return View();
+        }
+
+        public IActionResult Logout()
+        {
+            return View();
+        }
+
+        public List<User> Users()
+        {
+            return _context.Users.ToList();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
