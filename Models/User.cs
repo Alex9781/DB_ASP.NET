@@ -13,8 +13,8 @@ namespace DB_ASP.NET.Models
     public class User
     {
         public int Id { get; set; }
-        public string Login { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
+        public string Login { get; set; }
+        public string PasswordHash { get; set; }
         public Role Role { get; set; }
 
         public static string HashPassword(string password) => 

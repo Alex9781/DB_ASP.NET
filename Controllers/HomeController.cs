@@ -1,7 +1,6 @@
 ﻿using DB_ASP.NET.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DB_ASP.NET.Controllers
 {
@@ -19,25 +18,14 @@ namespace DB_ASP.NET.Controllers
             return View();
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        public IActionResult Logout()
-        {
-            return View();
-        }
-
         public List<User> Users()
         {
             return _context.Users.ToList();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public List<Movie> Movies()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return _context.Movies.ToList();
         }
     }
 }

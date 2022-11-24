@@ -13,7 +13,7 @@ namespace DB_ASP.NET
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => options.LoginPath = "/Login");
+                .AddCookie(options => options.LoginPath = "/Account/Login");
             builder.Services.AddAuthorization();
 
             builder.Services.AddDbContext<ApplicationContext>(
