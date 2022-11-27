@@ -22,6 +22,20 @@ namespace DB_ASP.NET.Models
                     Login = "admin", 
                     PasswordHash = User.HashPassword("qwerty"), 
                     Role = Role.Admin 
+                },
+                new User
+                {
+                    Id = 2,
+                    Login = "mod",
+                    PasswordHash = User.HashPassword("qwerty"),
+                    Role = Role.Moderator
+                },
+                new User
+                {
+                    Id = 3,
+                    Login = "user",
+                    PasswordHash = User.HashPassword("qwerty"),
+                    Role = Role.User
                 }
             );
             modelBuilder.Entity<Movie>().HasData(

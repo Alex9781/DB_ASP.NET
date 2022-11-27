@@ -9,7 +9,7 @@ namespace DB_ASP.NET.Controllers
 {
     public class AccountController : Controller
     {
-        private ApplicationContext db;
+        private readonly ApplicationContext db;
         public AccountController(ApplicationContext context)
         {
             db = context;
@@ -17,6 +17,11 @@ namespace DB_ASP.NET.Controllers
 
         [HttpGet]
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult AccessDenied()
         {
             return View();
         }
@@ -30,7 +35,7 @@ namespace DB_ASP.NET.Controllers
                 User user = db.Users.FirstOrDefault(u => u.Login == model.Login && u.PasswordHash == Models.User.HashPassword(model.Password));
                 if (user != null)
                 {
-                    await Authenticate(model.Login); // аутентификация
+                    await Authenticate(user.Login, user.Role); // аутентификация
 
                     return Redirect("/");
                 }
@@ -39,15 +44,16 @@ namespace DB_ASP.NET.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(string login)
+        private async Task Authenticate(string login, Role role)
         {
             // создаем один claim
             var claims = new List<Claim>
             {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, login)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role.ToString())
             };
             // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            ClaimsIdentity id = new(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             // установка аутентификационных куки
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
