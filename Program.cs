@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using DB_ASP.NET.Models;
 
 namespace DB_ASP.NET
@@ -19,10 +20,8 @@ namespace DB_ASP.NET
             builder.Services.AddDbContext<ApplicationContext>(
                 options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
             WebApplication app = builder.Build();
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
