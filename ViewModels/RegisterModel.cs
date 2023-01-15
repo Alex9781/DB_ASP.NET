@@ -4,14 +4,14 @@ namespace DB_ASP.NET.ViewModels
 {
     public class RegisterModel
     {
-        [Required(ErrorMessage = "Не указан логин")]
+        [Required(ErrorMessage = "РќРµ СѓРєР°Р·Р°РЅ Р»РѕРіРёРЅ")]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = "Не указан пароль")]
+        [Required(ErrorMessage = "РќРµ СѓРєР°Р·Р°РЅ РїР°СЂРѕР»СЊ")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Compare("Password", ErrorMessage = "Пароль введен неверно")]
+        [Compare("Password", ErrorMessage = "РџР°СЂРѕР»СЊ РІРІРµРґРµРЅ РЅРµРІРµСЂРЅРѕ")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
