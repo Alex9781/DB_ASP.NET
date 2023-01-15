@@ -4,6 +4,7 @@ using DB_ASP.NET.ViewModels;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace DB_ASP.NET.Controllers
 {
@@ -17,6 +18,12 @@ namespace DB_ASP.NET.Controllers
 
         [HttpGet]
         public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
@@ -40,6 +47,29 @@ namespace DB_ASP.NET.Controllers
                     return Redirect("/");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await db.Users.FirstOrDefaultAsync(u => u.Login == model.Login);
+                if (user == null)
+                {
+                    // добавляем пользователя в бд
+                    db.Users.Add(new User { Login = model.Login, PasswordHash = Models.User.HashPassword(model.Password) });
+                    await db.SaveChangesAsync();
+
+                    await Authenticate(model.Login, Role.User); // аутентификация
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
