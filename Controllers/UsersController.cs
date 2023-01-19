@@ -55,6 +55,7 @@ namespace DB_ASP.NET.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.PasswordHash = Models.User.HashPassword(user.PasswordHash);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,7 +95,8 @@ namespace DB_ASP.NET.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+					user.PasswordHash = Models.User.HashPassword(user.PasswordHash);
+					_context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
