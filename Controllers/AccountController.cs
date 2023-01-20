@@ -61,7 +61,7 @@ namespace DB_ASP.NET.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    db.Users.Add(new User { Login = model.Login, PasswordHash = Models.User.HashPassword(model.Password) });
+                    db.Users.Add(new User { Login = model.Login, PasswordHash = Models.User.HashPassword(model.Password), Role = Role.User });
                     await db.SaveChangesAsync();
 
                     await Authenticate(model.Login, Role.User); // аутентификация
